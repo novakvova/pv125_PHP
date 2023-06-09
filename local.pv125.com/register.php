@@ -18,13 +18,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $image = $_POST["image"];
     if(!empty($name) && !empty($email) && !empty($password) && !empty($phone) && !empty($image)) {
         try {
-            $dbh = new PDO('mysql:host=localhost;dbname=pv125', "root", "123456");
-            $sql = "INSERT INTO users (name, image, phone, password, email) VALUES(?, ?, ?, ?, ?);";
-            $sth = $dbh->prepare($sql);
-            $sth->execute([$name,$image,$phone, $password, $email]);
-            $dbh = null;
-            header('Location: /');
-            exit;
+            include $_SERVER["DOCUMENT_ROOT"] . "/connection_database.php";
+            if(isset($dbh)) {
+                $sql = "INSERT INTO users (name, image, phone, password, email) VALUES(?, ?, ?, ?, ?);";
+                $sth = $dbh->prepare($sql);
+                $sth->execute([$name,$image,$phone, $password, $email]);
+                $dbh = null;
+                header('Location: /');
+                exit;
+            }
+
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
             die();
