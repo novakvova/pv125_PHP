@@ -1,24 +1,32 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {Link} from "react-router-dom";
+import ModalDelete from "../../common/ModalDelete";
+import http_common from "../../../http_common";
+import {ICategoryItem} from "./types";
 
-interface ICategoryItem {
-    id: number;
-    name: string;
-    image: string;
-    description: string;
-}
+
 const CategoryListPage = () => {
     const [list, setList] = useState<ICategoryItem[]>([]);
 
     useEffect(() => {
-        axios
-            .get<ICategoryItem[]>("http://laravel.pv125.com/api/category")
+        http_common
+            .get<ICategoryItem[]>("api/category")
             .then((resp) => {
                 console.log("Categories", resp.data);
                 setList(resp.data);
             });
     }, []);
+
+    const onClickDelete = async (id: number) => {
+        try {
+            //console.log("Видаляємо категорію", id);
+            await http_common.delete(`api/category/${id}`);
+            setList(list.filter(x=>x.id!==id));
+        }
+        catch {
+            console.log("Помилка видалення");
+        }
+    }
 
     return (
         <>
@@ -32,6 +40,7 @@ const CategoryListPage = () => {
                         <th scope="col">Назва</th>
                         <th scope="col">Фото</th>
                         <th scope="col">Опис</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -42,6 +51,11 @@ const CategoryListPage = () => {
                                 <td>{c.name}</td>
                                 <td>{c.image}</td>
                                 <td>{c.description}</td>
+                                <td>
+                                    <ModalDelete id={c.id} text={c.name} deleteFunc={onClickDelete}/>
+                                    &nbsp; &nbsp;
+                                    <Link to={`/category/edit/${c.id}`} className="btn btn-info" >Змінить</Link>
+                                </td>
                             </tr>
                         );
                     })}

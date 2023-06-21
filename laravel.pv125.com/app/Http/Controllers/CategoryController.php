@@ -22,6 +22,37 @@ class CategoryController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     tags={"Category"},
+     *     path="/api/category/{id}",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Ідентифікатор категорії",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="number",
+     *             format="int64"
+     *         )
+     *     ),
+     *   security={{ "bearerAuth": {} }},
+     *     @OA\Response(response="200", description="List Categories."),
+     * @OA\Response(
+     *    response=404,
+     *    description="Wrong id",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Sorry, wrong Category Id has been sent. Pls try another one.")
+     *        )
+     *     )
+     * )
+     */
+    public function getById($id) {
+        $category = Category::findOrFail($id);
+        return response()->json($category, 200,
+            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
      * @OA\Post(
      *     tags={"Category"},
      *     path="/api/category",

@@ -23,3 +23,4 @@ Route::get("/category", [CategoryController::class, "index"]);
 Route::post("/category", [CategoryController::class, "store"]);
 Route::post("/category/edit/{id}", [CategoryController::class, "update"]);
 Route::delete("/category/{id}", [CategoryController::class, "delete"]);
+Route::get("/category/{id}", [CategoryController::class, "getById"]);
