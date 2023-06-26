@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import ModalDelete from "../../common/ModalDelete";
-import http_common from "../../../http_common";
+import ModalDelete from "../../../common/ModalDelete";
+import http_common from "../../../../http_common";
 import {ICategoryItem} from "./types";
 
 
@@ -32,7 +32,7 @@ const CategoryListPage = () => {
         <>
             <div className="container">
                 <h1 className="text-center">Список категорій</h1>
-                <Link to="/category/create" className="btn btn-success">Додати</Link>
+                <Link to="create" className="btn btn-success">Додати</Link>
                 <table className="table">
                     <thead>
                     <tr>
@@ -54,7 +54,7 @@ const CategoryListPage = () => {
                                 <td>
                                     <ModalDelete id={c.id} text={c.name} deleteFunc={onClickDelete}/>
                                     &nbsp; &nbsp;
-                                    <Link to={`/category/edit/${c.id}`} className="btn btn-info" >Змінить</Link>
+                                    <Link to={`edit/${c.id}`} className="btn btn-info" >Змінить</Link>
                                 </td>
                             </tr>
                         );

@@ -1,54 +1,39 @@
-import {ICategoryEdit} from "./types";
-import {useNavigate, useParams} from "react-router-dom";
+import {ICategoryCreate} from "./types";
+import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik";
 import axios from "axios";
-import http_common from "../../../http_common";
-import {useEffect} from "react";
-import {ICategoryItem} from "../list/types";
 
 
-const CategoryEditPage = () => {
+const CategoryCreatePage = () => {
 
     const navigate = useNavigate();
-    const {id} = useParams();
 
-    const init: ICategoryEdit = {
-        id: id ? Number(id) : 0,
+    const init: ICategoryCreate = {
         name: "",
         image: "",
         description: ""
     };
 
-    const onFormikSubmit = async (values: ICategoryEdit) => {
+    const onFormikSubmit = async (values: ICategoryCreate) => {
         //console.log("Send Formik Data", values);
         try {
-            const result = await http_common.post(`api/category/edit/${id}`, values);
-            navigate("/");
-        } catch {
+            const result = await axios.post("http://laravel.pv125.com/api/category", values);
+            navigate("..");
+        }
+        catch {
             console.log("Server error");
         }
     }
 
     const formik = useFormik({
-        initialValues: init,
-        onSubmit: onFormikSubmit
+       initialValues: init,
+       onSubmit: onFormikSubmit
     });
 
-    const {values, handleChange, handleSubmit, setFieldValue} = formik;
-
-    useEffect(() => {
-        http_common.get<ICategoryItem>(`api/category/${id}`)
-            .then(resp => {
-                const {data} = resp;
-                setFieldValue("name", data.name);
-                setFieldValue("image", data.image);
-                setFieldValue("description", data.description);
-            });
-    },[id]);
-
+    const {values, handleChange, handleSubmit } = formik;
     return (
         <>
-            <h1 className="text-center">Змінить категорію</h1>
+            <h1 className="text-center">Додати категорію</h1>
             <div className="container">
                 <form className="col-md-8 offset-md-2" onSubmit={handleSubmit}>
                     <div className="mb-3">
@@ -75,11 +60,11 @@ const CategoryEditPage = () => {
                                name="description"/>
                     </div>
 
-                    <button type="submit" className="btn btn-primary">Зберегти</button>
+                    <button type="submit" className="btn btn-primary">Додати</button>
                 </form>
             </div>
         </>
     );
 }
 
-export default CategoryEditPage;
+export default CategoryCreatePage;
