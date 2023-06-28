@@ -1,6 +1,6 @@
 export interface ICategoryEdit {
     id: number;
     name: string;
-    image: string;
+    image: File|null;
     description: string;
 }
