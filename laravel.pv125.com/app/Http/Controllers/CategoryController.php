@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Validator;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class CategoryController extends Controller
 {
@@ -63,7 +64,7 @@ class CategoryController extends Controller
      *                 required={"name","image","description"},
      *                 @OA\Property(
      *                     property="image",
-     *                     type="string"
+     *                     type="file",
      *                 ),
      *                 @OA\Property(
      *                     property="name",
@@ -94,6 +95,25 @@ class CategoryController extends Controller
         if($validator->fails()) {
             return response()->json($validator->errors(), 400,
                 ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            // Generate a unique filename
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $sizes = [50, 150, 300, 600, 1200];
+            foreach ($sizes as $size)
+            {
+                $fileSave = $size.'_'.$filename;
+                // Resize the image while maintaining aspect ratio
+                $resizedImage = Image::make($image)->resize($size, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->encode();
+                // Save the resized image
+                $path = public_path('uploads/' . $fileSave);
+                file_put_contents($path, $resizedImage);
+            }
+            $input['image'] = $filename;
         }
         $category = Category::create($input);
         return response()->json($category, 200,

@@ -41,7 +41,7 @@
                                 ],
                                 "properties": {
                                     "image": {
-                                        "type": "string"
+                                        "type": "file"
                                     },
                                     "name": {
                                         "type": "string"

@@ -8,6 +8,7 @@ import CategoryCreatePage from "./components/admin/category/create/CategoryCreat
 import CategoryEditPage from "./components/admin/category/edit/CategoryEditPage";
 import AdminLayout from "./components/admin/container/AdminLayout";
 import AdminDashboard from "./components/admin/dashboard/AdminDashboard";
+import HomePage from "./components/home/HomePage";
 
 
 function App() {
@@ -15,8 +16,7 @@ function App() {
         <>
             <Routes>
                 <Route path="/">
-
-
+                    <Route index element={<HomePage/>}/>
                 </Route>
 
                 <Route path={"/admin"} element={<AdminLayout/>}>
