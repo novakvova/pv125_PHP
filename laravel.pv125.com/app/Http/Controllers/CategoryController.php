@@ -239,6 +239,15 @@ class CategoryController extends Controller
      */
     public function delete(Request $request, $id) {
         $category = Category::findOrFail($id);
+        $sizes = [50, 150, 300, 600, 1200];
+        //remove old images
+        foreach ($sizes as $size) {
+            $fileDelete = $size.'_'.$category->image;
+            $removePath = public_path('uploads/' . $fileDelete);
+            if (file_exists($removePath)) {
+                unlink($removePath);
+            }
+        }
         $category->delete();
         return 204;
     }
