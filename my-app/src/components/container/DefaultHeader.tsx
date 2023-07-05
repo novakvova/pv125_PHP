@@ -1,9 +1,20 @@
-import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {IAuthUser} from "../auth/types";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AuthUserActionType, IAuthUser} from "../auth/types";
+import {MouseEvent} from "react";
 
 const DefaultHeader = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const {user, isAuth} = useSelector((store: any) => store.auth as IAuthUser);
+
+    const onLogoutHandler = (e: MouseEvent) => {
+        e.preventDefault();
+        //console.log("logout");
+        localStorage.removeItem("token");
+        dispatch({type: AuthUserActionType.LOGOUT_USER});
+        navigate("/");
+    }
     return (
         <>
             <header data-bs-theme="dark">
@@ -33,10 +44,10 @@ const DefaultHeader = () => {
                                         <Link className="nav-link" to="/profile">{user?.email}</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/logout">Вихід</Link>
+                                        <Link className="nav-link" to="/logout" onClick={onLogoutHandler}>Вихід</Link>
                                     </li>
                                 </ul>
-                            ): (
+                            ) : (
                                 <ul className={"navbar-nav"}>
                                     <li className="nav-item">
                                         <Link className="nav-link" to="/register">Реєстрація</Link>

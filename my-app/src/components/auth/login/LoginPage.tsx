@@ -23,7 +23,9 @@ const LoginPage = () => {
             const result = await http_common.post<ILoginResult>('api/auth/login', values);
             //console.log("Login is good", result.data);
             const {data} = result;
-            var user = jwtDecode(data.access_token) as IUser;
+            const token = data.access_token;
+            localStorage.token = token;
+            var user = jwtDecode(token) as IUser;
             dispatch({
                 type: AuthUserActionType.LOGIN_USER,
                 payload: {
