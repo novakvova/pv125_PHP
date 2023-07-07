@@ -26,11 +26,13 @@ const LoginPage = () => {
             const token = data.access_token;
             localStorage.token = token;
             var user = jwtDecode(token) as IUser;
+            console.log("Login user info", user);
             dispatch({
                 type: AuthUserActionType.LOGIN_USER,
                 payload: {
                     email: user.email,
-                    name: user.name
+                    name: user.name,
+                    role: user.role
                 }
             });
             console.log("User info", user);

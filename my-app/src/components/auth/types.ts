@@ -6,6 +6,7 @@ export enum AuthUserActionType {
 export interface IUser {
     email: string;
     name: string;
+    role: string;
 }
 
 export interface IAuthUser {
