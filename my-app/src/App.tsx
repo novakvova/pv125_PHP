@@ -11,11 +11,13 @@ import AdminDashboard from "./components/admin/dashboard/AdminDashboard";
 import HomePage from "./components/home/HomePage";
 import DefaultLayout from "./components/container/DefaultLayout";
 import LoginPage from "./components/auth/login/LoginPage";
+import Loader from "./components/common/loader/Loader";
 
 
 function App() {
     return (
         <>
+            <Loader/>
             <Routes>
                 <Route path="/" element={<DefaultLayout/>}>
                     <Route index element={<HomePage/>}/>
