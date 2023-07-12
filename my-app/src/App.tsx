@@ -12,6 +12,7 @@ import HomePage from "./components/home/HomePage";
 import DefaultLayout from "./components/container/DefaultLayout";
 import LoginPage from "./components/auth/login/LoginPage";
 import Loader from "./components/common/loader/Loader";
+import RegisterPage from "./components/auth/register/RegisterPage";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/" element={<DefaultLayout/>}>
                     <Route index element={<HomePage/>}/>
                     <Route path="login" element={<LoginPage/>}/>
+                    <Route path="register" element={<RegisterPage/>}/>
                 </Route>
 
                 <Route path={"/admin"} element={<AdminLayout/>}>

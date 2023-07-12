@@ -292,5 +292,4 @@ class ProductController extends Controller
             'Charset' => 'utf-8'
         ], JSON_UNESCAPED_UNICODE);
     }
-
 }
